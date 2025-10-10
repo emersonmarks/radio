@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rádios do Brasil - Responsivo</title>
 <style>
-
 	*{ box-sizing: border-box; }
 
     body {
@@ -26,7 +25,7 @@
         top: 0;
         background: #1e1e1e;
         width: 100%;
-        max-width: 600px;
+        max-width: 500px;
         padding: 15px;
         border-radius: 8px;
         margin-bottom: 20px;
@@ -34,6 +33,12 @@
         box-shadow: 0 0 10px #000;
         z-index: 5;
     }
+	
+	#radioEscolhida{		
+		display: flex;
+		align-items: center;
+	}
+	
     #currentLogo {
         width: 60px;
         height: 60px;
@@ -42,8 +47,9 @@
         background: #fff;
         margin-bottom: 8px;
     }
-    #currentStation { margin: 5px 0; }
-    audio {
+    #currentStation { margin: 0px 0px 8px 10px; }
+    
+	audio {
         width: 100%;
         margin-top: 5px;
     }
@@ -53,7 +59,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-bottom: 20px;
+        margin: 0px 20px 20px 20px;
         justify-content: center;
     }
     input, select, button {
@@ -72,7 +78,7 @@
 
     /* Áreas de anúncios */
     .ad-top, .ad-bottom {
-        width: calc( 100% );
+        width: calc( 100% - 320px );
         max-width: 1200px;
         height: 90px;
         background: #333;
@@ -80,7 +86,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 10px 0;
+        margin: 15px 0;
         text-align: center;
     }
     .ad-side {
@@ -95,7 +101,7 @@
         height: fit-content;
         align-self: flex-start;
         position: sticky;
-        top: 120px; /* para não sobrepor o player fixo */
+        top: 120px;
         text-align: center;
     }
 
@@ -128,6 +134,7 @@
         text-align: center;
         transition: 0.3s;
         cursor: pointer;
+        position: relative;
     }
     .station:hover { background: #333; }
     .station img {
@@ -139,8 +146,29 @@
         margin-bottom: 10px;
     }
 
+    /* Ícone de favorito */
+    .fav-icon {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 26px;
+        cursor: pointer;
+        user-select: none;
+        transition: 0.3s;
+    }
+    .fav-icon.favorited {
+        color: #ff0;
+        text-shadow: 0 0 5px #000;
+    }
+    .fav-icon:not(.favorited) {
+        color: #777;
+    }
+
     /* ===== Responsivo ===== */
     @media (max-width: 1000px) {
+		.ad-top, .ad-bottom {
+        width: calc( 100% - 40px );}
+	
         .ad-side { display: none; }
         #stations { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
     }
@@ -166,86 +194,98 @@
 </head>
 <body>
 
-<!-- Logo / Título -->
 <h1>🎵 Rádios do Brasil</h1>
 
 <!-- Player fixo -->
 <div id="playerContainer" style="display: none;">
+  <div id="radioEscolhida">
     <img id="currentLogo" src="" alt="Logo">
     <h3 id="currentStation"></h3>
+  </div>
     <audio id="radioPlayer" controls autoplay></audio>
 </div>
 
 <!-- Filtros -->
 <div id="filters">
     <input type="text" id="searchInput" placeholder="Buscar por nome...">
+	<select id="stateSelect">
+		<option value="">Todos os estados</option>
+		<option value="São Paulo">São Paulo</option>
+		<option value="Rio de Janeiro">Rio de Janeiro</option>
+		<option value="Minas Gerais">Minas Gerais</option>
+		<option value="Bahia">Bahia</option>
+		<option value="Paraná">Paraná</option>
+		<option value="Rio Grande do Sul">Rio Grande do Sul</option>
+		<option value="Santa Catarina">Santa Catarina</option>
+		<option value="Pernambuco">Pernambuco</option>
+		<option value="Ceará">Ceará</option>
+		<option value="Goiás">Goiás</option>
+	</select>
 
-    <select id="stateSelect">
-        <option value="">Todos os estados</option>
-        <option value="São Paulo">São Paulo</option>
-        <option value="Rio de Janeiro">Rio de Janeiro</option>
-        <option value="Minas Gerais">Minas Gerais</option>
-        <option value="Bahia">Bahia</option>
-        <option value="Paraná">Paraná</option>
-        <option value="Rio Grande do Sul">Rio Grande do Sul</option>
-        <option value="Santa Catarina">Santa Catarina</option>
-        <option value="Pernambuco">Pernambuco</option>
-        <option value="Ceará">Ceará</option>
-        <option value="Goiás">Goiás</option>
-    </select>
-
-    <select id="categorySelect">
-        <option value="">Todas as categorias</option>
-        <option value="rock">Rock</option>
-        <option value="sertanejo">Sertanejo</option>
-        <option value="gospel">Gospel</option>
-        <option value="pop">Pop</option>
-        <option value="jazz">Jazz</option>
-        <option value="news">Notícias</option>
-        <option value="classical">Clássica</option>
-        <option value="electronic">Eletrônica</option>
-        <option value="forró">Forró</option>
-        <option value="pagode">Pagode</option>
-    </select>
-
-    <button onclick="applyFilters()">Buscar</button>
+	<select id="categorySelect">
+		<option value="">Todas as categorias</option>
+		<option value="rock">Rock</option>
+		<option value="sertanejo">Sertanejo</option>
+		<option value="gospel">Gospel</option>
+		<option value="pop">Pop</option>
+		<option value="jazz">Jazz</option>
+		<option value="news">Notícias</option>
+		<option value="classical">Clássica</option>
+		<option value="electronic">Eletrônica</option>
+		<option value="forró">Forró</option>
+		<option value="pagode">Pagode</option>
+	</select>
+	<button onclick="applyFilters()">Buscar</button>
+	<button onclick="showFavorites()">⭐ Favoritos</button>
 </div>
 
-<!-- Anúncio topo -->
 <div class="ad-top">[ Espaço para anúncio - Topo 1200x90 ]</div>
 
-<!-- Conteúdo com anúncios laterais -->
 <div class="main-container">
-    <!-- Anúncio lateral esquerda -->
     <div class="ad-side">[ Lateral Esquerda ]</div>
-
-    <!-- Conteúdo principal -->
     <div class="content">
         <div id="stations"></div>
     </div>
-
-    <!-- Anúncio lateral direita -->
     <div class="ad-side">[ Lateral Direita ]</div>
 </div>
 
-<!-- Anúncio rodapé -->
 <div class="ad-bottom">[ Espaço para anúncio - Rodapé 1200x90 ]</div>
 
 <script>
-const API_BASE = "https://de1.api.radio-browser.info/json";
+const API_BASE = "https://de2.api.radio-browser.info/json";
 const playerContainer = document.getElementById("playerContainer");
 const player = document.getElementById("radioPlayer");
 const currentLogo = document.getElementById("currentLogo");
 const currentStation = document.getElementById("currentStation");
 
-window.onload = () => {
-    fetchStations(); // Carrega rádios mais populares
-};
+let favorites = JSON.parse(localStorage.getItem("favoriteStations") || "[]");
+
+// Sempre carrega o feed e depois tenta tocar a rádio da URL
+window.addEventListener('DOMContentLoaded', async () => {
+    // 1) Lista de rádios
+    fetchStations();
+
+    // 2) Se tiver ?station=..., toca essa rádio também
+    const params = new URLSearchParams(location.search);
+    const stationId = params.get('station');
+
+    if (stationId) {
+        try {
+            const r = await fetch(`${API_BASE}/stations/byuuid/${encodeURIComponent(stationId)}`);
+            const data = await r.json();
+            if (Array.isArray(data) && data.length) {
+                playStation(data[0], false);
+            }
+        } catch (e) {
+            console.warn("Falha ao carregar rádio da URL:", e);
+        }
+    }
+});
 
 async function fetchStations(search = "", state = "", category = "") {
     document.getElementById("stations").innerHTML = "<p>Carregando estações...</p>";
     try {
-        let url = `${API_BASE}/stations/search?country=Brazil&limit=20&order=clickcount&reverse=true`;
+        let url = `${API_BASE}/stations/search?country=Brazil&limit=30&order=clickcount&reverse=true`;
         if (search) url += `&name=${encodeURIComponent(search)}`;
         if (state) url += `&state=${encodeURIComponent(state)}`;
         if (category) url += `&tag=${encodeURIComponent(category)}`;
@@ -272,26 +312,58 @@ function renderStations(stations) {
         const div = document.createElement("div");
         div.className = "station";
 
+        const isFavorite = favorites.some(fav => fav.stationuuid === station.stationuuid);
+
         div.innerHTML = `
+            <span class="fav-icon ${isFavorite ? 'favorited' : ''}">★</span>
             <img src="${station.favicon || 'https://via.placeholder.com/80?text=🎵'}" alt="Logo">
             <h3>${station.name}</h3>
-            <p style="font-size: 0.9em; color: #aaa; word-wrap: break-word; overflow-wrap: break-word; ">${station.tags || "Sem tags"}</p>
+            <p style="font-size: 0.9em; color: #aaa; word-wrap: break-word; overflow-wrap: break-word;">${station.tags || "Sem tags"}</p>
         `;
-		
-		
 
-        div.onclick = () => playStation(station);
+        div.querySelector("img").onclick = () => playStation(station, true);
+        div.querySelector("h3").onclick = () => playStation(station, true);
+
+        div.querySelector(".fav-icon").onclick = (e) => {
+            e.stopPropagation();
+            toggleFavorite(station);
+            renderStations(stations);
+        };
 
         container.appendChild(div);
     });
 }
 
-function playStation(station) {
+function toggleFavorite(station) {
+    const index = favorites.findIndex(fav => fav.stationuuid === station.stationuuid);
+    if (index > -1) {
+        favorites.splice(index, 1);
+    } else {
+        favorites.push({ stationuuid: station.stationuuid, ...station });
+    }
+    localStorage.setItem("favoriteStations", JSON.stringify(favorites));
+}
+
+function showFavorites() {
+    if (!favorites.length) {
+        document.getElementById("stations").innerHTML = "<p>Você ainda não tem rádios favoritas.</p>";
+        return;
+    }
+    renderStations(favorites);
+}
+
+function playStation(station, updateUrl = true) {
     currentLogo.src = station.favicon || "https://via.placeholder.com/60?text=🎵";
     currentStation.textContent = station.name;
     player.src = station.url_resolved;
     player.play();
     playerContainer.style.display = "block";
+
+    if (updateUrl) {
+        const params = new URLSearchParams(window.location.search);
+        params.set("station", station.stationuuid);
+        history.pushState(null, "", "?" + params.toString());
+    }
 }
 
 function applyFilters() {
