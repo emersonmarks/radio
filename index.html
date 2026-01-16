@@ -356,7 +356,7 @@ function renderStations(stations) {
 
         div.innerHTML = `
             <span class="fav-icon ${isFavorite ? 'favorited' : ''}">★</span>
-            <img src="${station.favicon || 'https://via.placeholder.com/80?text=🎵'}" alt="Logo"
+            <img src="${station.favicon || 'https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png'}" alt="Logo"
 				onerror="this.src='https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png'">
             <h3>${station.name}</h3>
             <p style="font-size: 0.9em; color: #aaa; word-wrap: break-word; overflow-wrap: break-word;">${station.tags || "Sem tags"}</p>
@@ -394,8 +394,7 @@ function showFavorites() {
 }
 
 function playStation(station, updateUrl = true) {
-    currentLogo.src = station.favicon || "https://via.placeholder.com/60?text=🎵" onerror="this.src='https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png'";
-    currentStation.textContent = station.name;
+    currentLogo.src = station.favicon || "https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png";
     player.src = station.url_resolved;
     player.play();
     playerContainer.style.display = "block";
@@ -416,6 +415,7 @@ function applyFilters() {
 </script>
 </body>
 </html>
+
 
 
 
