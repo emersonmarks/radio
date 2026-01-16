@@ -252,7 +252,7 @@
 <div class="ad-bottom">[ Espaço para anúncio - Rodapé 1200x90 ]</div>
 
 <script>
-const API_BASE = "https://de2.api.radio-browser.info/json";
+const API_BASE = "https://de1.api.radio-browser.info/json";
 const playerContainer = document.getElementById("playerContainer");
 const player = document.getElementById("radioPlayer");
 const currentLogo = document.getElementById("currentLogo");
@@ -285,7 +285,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 async function fetchStations(search = "", state = "", category = "") {
     document.getElementById("stations").innerHTML = "<p>Carregando estações...</p>";
     try {
-        let url = `${API_BASE}/stations/search?country=Brazil&limit=30&order=clickcount&reverse=true`;
+        let url = `${API_BASE}/stations/search?country=Brazil&limit=40&order=clickcount&reverse=true`;
         if (search) url += `&name=${encodeURIComponent(search)}`;
         if (state) url += `&state=${encodeURIComponent(state)}`;
         if (category) url += `&tag=${encodeURIComponent(category)}`;
@@ -375,3 +375,4 @@ function applyFilters() {
 </script>
 </body>
 </html>
+
