@@ -325,7 +325,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 async function fetchStations(search = "", state = "", category = "") {
     document.getElementById("stations").innerHTML = "<p>Carregando estações...</p>";
     try {
-        let url = `${API_BASE}/stations/search?country=Brazil&limit=40&order=clickcount&reverse=true`;
+        let url = `${API_BASE}/stations/search?country=Brazil&hidebroken=false&limit=100&order=clickcount&reverse=true`;
         if (search) url += `&name=${encodeURIComponent(search)}`;
         if (state) url += `&state=${encodeURIComponent(state)}`;
         if (category) url += `&tag=${encodeURIComponent(category)}`;
@@ -356,7 +356,8 @@ function renderStations(stations) {
 
         div.innerHTML = `
             <span class="fav-icon ${isFavorite ? 'favorited' : ''}">★</span>
-            <img src="${station.favicon || 'https://via.placeholder.com/80?text=🎵'}" alt="Logo">
+            <img src="${station.favicon || 'https://via.placeholder.com/80?text=🎵'}" alt="Logo"
+				onerror="this.src='https://via.placeholder.com/80?text=🎵'">
             <h3>${station.name}</h3>
             <p style="font-size: 0.9em; color: #aaa; word-wrap: break-word; overflow-wrap: break-word;">${station.tags || "Sem tags"}</p>
         `;
@@ -415,6 +416,7 @@ function applyFilters() {
 </script>
 </body>
 </html>
+
 
 
 
