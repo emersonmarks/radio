@@ -208,73 +208,33 @@
 <!-- Filtros -->
 <div id="filters">
     <input type="text" id="searchInput" placeholder="Buscar por nome...">
-<select id="stateSelect">
-  <option value="">Todos os estados</option>
-  <option value="Acre">Acre</option>
-  <option value="Alagoas">Alagoas</option>
-  <option value="Amapá">Amapá</option>
-  <option value="Amazonas">Amazonas</option>
-  <option value="Bahia">Bahia</option>
-  <option value="Ceará">Ceará</option>
-  <option value="Distrito Federal">Distrito Federal</option>
-  <option value="Espírito Santo">Espírito Santo</option>
-  <option value="Goiás">Goiás</option>
-  <option value="Maranhão">Maranhão</option>
-  <option value="Mato Grosso">Mato Grosso</option>
-  <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
-  <option value="Minas Gerais">Minas Gerais</option>
-  <option value="Pará">Pará</option>
-  <option value="Paraíba">Paraíba</option>
-  <option value="Paraná">Paraná</option>
-  <option value="Pernambuco">Pernambuco</option>
-  <option value="Piauí">Piauí</option>
-  <option value="Rio de Janeiro">Rio de Janeiro</option>
-  <option value="Rio Grande do Norte">Rio Grande do Norte</option>
-  <option value="Rio Grande do Sul">Rio Grande do Sul</option>
-  <option value="Rondônia">Rondônia</option>
-  <option value="Roraima">Roraima</option>
-  <option value="Santa Catarina">Santa Catarina</option>
-  <option value="São Paulo">São Paulo</option>
-  <option value="Sergipe">Sergipe</option>
-  <option value="Tocantins">Tocantins</option>
-</select>
+	<select id="stateSelect">
+		<option value="">Todos os estados</option>
+		<option value="São Paulo">São Paulo</option>
+		<option value="Rio de Janeiro">Rio de Janeiro</option>
+		<option value="Minas Gerais">Minas Gerais</option>
+		<option value="Bahia">Bahia</option>
+		<option value="Paraná">Paraná</option>
+		<option value="Rio Grande do Sul">Rio Grande do Sul</option>
+		<option value="Santa Catarina">Santa Catarina</option>
+		<option value="Pernambuco">Pernambuco</option>
+		<option value="Ceará">Ceará</option>
+		<option value="Goiás">Goiás</option>
+	</select>
 
-<select id="categorySelect">
-  <option value="">Todas as categorias</option>
-  <option value="adult contemporary">Adult Contemporary</option>
-  <option value="alternative">Alternative</option>
-  <option value="ambient">Ambient</option>
-  <option value="blues">Blues</option>
-  <option value="bossa nova">Bossa Nova</option>
-  <option value="classical">Clássica</option>
-  <option value="country">Country</option>
-  <option value="dance">Dance</option>
-  <option value="electronic">Eletrônica</option>
-  <option value="forró">Forró</option>
-  <option value="funk">Funk</option>
-  <option value="gospel">Gospel</option>
-  <option value="hip hop">Hip Hop</option>
-  <option value="house">House</option>
-  <option value="indie">Indie</option>
-  <option value="jazz">Jazz</option>
-  <option value="latin">Latin</option>
-  <option value="mpb">MPB</option>
-  <option value="news">Notícias</option>
-  <option value="oldies">Oldies</option>
-  <option value="pop">Pop</option>
-  <option value="progressive">Progressive</option>
-  <option value="reggae">Reggae</option>
-  <option value="religious">Religiosa</option>
-  <option value="rock">Rock</option>
-  <option value="salsa">Salsa</option>
-  <option value="sertanejo">Sertanejo</option>
-  <option value="soul">Soul</option>
-  <option value="talk">Talk / Entrevistas</option>
-  <option value="techno">Techno</option>
-  <option value="trance">Trance</option>
-  <option value="variety">Variedades</option>
-</select>
-
+	<select id="categorySelect">
+		<option value="">Todas as categorias</option>
+		<option value="rock">Rock</option>
+		<option value="sertanejo">Sertanejo</option>
+		<option value="gospel">Gospel</option>
+		<option value="pop">Pop</option>
+		<option value="jazz">Jazz</option>
+		<option value="news">Notícias</option>
+		<option value="classical">Clássica</option>
+		<option value="electronic">Eletrônica</option>
+		<option value="forró">Forró</option>
+		<option value="pagode">Pagode</option>
+	</select>
 	<button onclick="applyFilters()">Buscar</button>
 	<button onclick="showFavorites()">⭐ Favoritos</button>
 </div>
@@ -325,7 +285,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 async function fetchStations(search = "", state = "", category = "") {
     document.getElementById("stations").innerHTML = "<p>Carregando estações...</p>";
     try {
-        let url = `${API_BASE}/stations/search?country=Brazil&limit=100&order=clickcount&reverse=true`;
+        let url = `${API_BASE}/stations/search?country=Brazil&limit=30&order=clickcount&reverse=true`;
         if (search) url += `&name=${encodeURIComponent(search)}`;
         if (state) url += `&state=${encodeURIComponent(state)}`;
         if (category) url += `&tag=${encodeURIComponent(category)}`;
@@ -356,7 +316,7 @@ function renderStations(stations) {
 
         div.innerHTML = `
             <span class="fav-icon ${isFavorite ? 'favorited' : ''}">★</span>
-            <img src="${station.favicon || 'https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png'}" alt="Logo">
+            <img src="${station.favicon || 'https://via.placeholder.com/80?text=🎵'}" alt="Logo">
             <h3>${station.name}</h3>
             <p style="font-size: 0.9em; color: #aaa; word-wrap: break-word; overflow-wrap: break-word;">${station.tags || "Sem tags"}</p>
         `;
@@ -393,7 +353,8 @@ function showFavorites() {
 }
 
 function playStation(station, updateUrl = true) {
-    currentLogo.src = station.favicon || "https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png";
+    currentLogo.src = station.favicon || "https://via.placeholder.com/60?text=🎵";
+    currentStation.textContent = station.name;
     player.src = station.url_resolved;
     player.play();
     playerContainer.style.display = "block";
@@ -414,12 +375,3 @@ function applyFilters() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
