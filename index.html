@@ -394,7 +394,7 @@ function showFavorites() {
 }
 
 function playStation(station, updateUrl = true) {
-    currentLogo.src = station.favicon || "https://via.placeholder.com/60?text=🎵";
+    currentLogo.src = station.favicon || "https://via.placeholder.com/60?text=🎵" onerror="this.src='https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png'";
     currentStation.textContent = station.name;
     player.src = station.url_resolved;
     player.play();
@@ -416,6 +416,7 @@ function applyFilters() {
 </script>
 </body>
 </html>
+
 
 
 
