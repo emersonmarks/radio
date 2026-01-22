@@ -406,7 +406,7 @@ function applyFilters() {
     const state = document.getElementById("stateSelect").value;
     const category = document.getElementById("categorySelect").value;
     fetchStations(search, state, category);
-
+}
 function loadTopAd() {
     const container = document.getElementById("ad-top");
     if (!container) return;
@@ -451,11 +451,10 @@ setInterval(() => {
     loadBottomAd();
 }, 180000); // 3 minutos
 
-    
-}
 </script>
 </body>
 </html>
+
 
 
 
