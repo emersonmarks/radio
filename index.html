@@ -1,433 +1,300 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rádios do Brasil - Responsivo</title>
+
 <style>
-	*{ box-sizing: border-box; }
+*{ box-sizing: border-box; }
 
-    body {
-        font-family: Arial, sans-serif;
-        background: #121212;
-        color: #fff;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    h1 { margin: 20px 0 10px 0; }
+h1 { margin: 20px 0 10px 0; }
 
-    /* Player fixo */
-    #playerContainer {
-        position: sticky;
-        top: 0;
-        background: #1e1e1e;
-        width: 100%;
-        max-width: 500px;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        text-align: center;
-        box-shadow: 0 0 10px #000;
-        z-index: 5;
-    }
-	
-	#radioEscolhida{		
-		display: flex;
-		align-items: center;
-	}
-	
-    #currentLogo {
-        width: 60px;
-        height: 60px;
-        object-fit: contain;
-        border-radius: 8px;
-        background: #fff;
-        margin-bottom: 8px;
-    }
-    #currentStation { margin: 0px 0px 8px 10px; }
-    
-	audio {
-        width: 100%;
-        margin-top: 5px;
-    }
+/* Player */
+#playerContainer {
+    position: sticky;
+    top: 0;
+    background: #1e1e1e;
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px #000;
+    z-index: 5;
+    display: none;
+}
 
-    /* Filtros */
-    #filters {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 0px 20px 20px 20px;
-        justify-content: center;
-    }
-    input, select, button {
-        padding: 8px;
-        border: none;
-        border-radius: 4px;
-        background: #1e1e1e;
-        color: #fff;
-    }
-    input { width: 220px; }
-    button {
-        background: #ff6f61;
-        cursor: pointer;
-    }
-    button:hover { background: #ff3b2f; }
+#radioEscolhida {
+    display: flex;
+    align-items: center;
+}
 
-    /* Áreas de anúncios */
-    .ad-top, .ad-bottom {
-        width: 1200px;
-        max-width: 90%;
-        height: auto;
-        color: #ccc;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-		 margin: 15px 0px;
-        text-align: center;
-    }
-    .ad-side {
-        width: 120px;
-        background: #333;
-        color: #ccc;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 10px;
-        flex-shrink: 0;
-        height: fit-content;
-        align-self: flex-start;
-        position: sticky;
-        top: 120px;
-        text-align: center;
-    }
+#currentLogo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #fff;
+}
 
-	
-    /* Layout principal */
-    .main-container {
-        display: flex;
-        width: 100%;
-        max-width: 1400px;
-        justify-content: center;
-    }
-    .content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 0 20px;
-    }
+#currentStation { margin-left: 10px; }
 
-    /* Listagem de rádios */
-    #stations {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 15px;
-        width: 100%;
-    }
-    .station {
-        background: #1e1e1e;
-        border-radius: 8px;
-        padding: 15px;
-        text-align: center;
-        transition: 0.3s;
-        cursor: pointer;
-        position: relative;
-    }
-    .station:hover { background: #333; }
-    .station img {
-        width: 80px;
-        height: 80px;
-        object-fit: contain;
-        border-radius: 8px;
-        background: #fff;
-        margin-bottom: 10px;
-    }
+audio { width: 100%; margin-top: 5px; }
 
-    /* Ícone de favorito */
-    .fav-icon {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        font-size: 26px;
-        cursor: pointer;
-        user-select: none;
-        transition: 0.3s;
-    }
-    .fav-icon.favorited {
-        color: #ff0;
-        text-shadow: 0 0 5px #000;
-    }
-    .fav-icon:not(.favorited) {
-        color: #777;
-    }
+/* Filtros */
+#filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px;
+    justify-content: center;
+}
 
-    /* ===== Responsivo ===== */
-    @media (max-width: 1000px) {
-	
-        .ad-side { display: none; }
-        #stations { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
-    }
+input, select, button {
+    padding: 8px;
+    border-radius: 4px;
+    border: none;
+    background: #1e1e1e;
+    color: #fff;
+}
 
-    @media (max-width: 540px) {
-        #filters {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        #filters input, #filters select, #filters button {
-            width: 100%;
-        }
+input { width: 220px; }
 
-        #playerContainer {
-            max-width: 95%;
-        }
-    }
+button {
+    background: #ff6f61;
+    cursor: pointer;
+}
+
+button:hover { background: #ff3b2f; }
+
+/* Anúncios */
+.ad-top, .ad-bottom {
+    width: 1200px;
+    max-width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.ad-side {
+    width: 120px;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    position: sticky;
+    top: 120px;
+}
+
+/* Layout */
+.main-container {
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    justify-content: center;
+}
+
+.content {
+    flex: 1;
+    padding: 0 20px;
+}
+
+/* Lista */
+#stations {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.station {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.station:hover { background: #333; }
+
+.station img {
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+.fav-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.favorited { color: #ff0; }
+
+@media (max-width: 1000px) {
+    .ad-side { display: none; }
+}
+
+@media (max-width: 540px) {
+    #filters { flex-direction: column; }
+    input, select, button { width: 100%; }
+}
 </style>
 </head>
+
 <body>
 
 <h1>🎵 Rádios do Brasil</h1>
 
-<!-- Player fixo -->
-<div id="playerContainer" style="display: none;">
-  <div id="radioEscolhida">
-    <img id="currentLogo" src="" alt="Logo">
-    <h3 id="currentStation"></h3>
-  </div>
+<!-- Player -->
+<div id="playerContainer">
+    <div id="radioEscolhida">
+        <img id="currentLogo">
+        <h3 id="currentStation"></h3>
+    </div>
     <audio id="radioPlayer" controls autoplay></audio>
 </div>
 
 <!-- Filtros -->
 <div id="filters">
-    <input type="text" id="searchInput" placeholder="Buscar por nome...">
-<select id="stateSelect">
-  <option value="">Todos os estados</option>
-  <option value="Acre">Acre</option>
-  <option value="Alagoas">Alagoas</option>
-  <option value="Amapá">Amapá</option>
-  <option value="Amazonas">Amazonas</option>
-  <option value="Bahia">Bahia</option>
-  <option value="Ceará">Ceará</option>
-  <option value="Distrito Federal">Distrito Federal</option>
-  <option value="Espírito Santo">Espírito Santo</option>
-  <option value="Goiás">Goiás</option>
-  <option value="Maranhão">Maranhão</option>
-  <option value="Mato Grosso">Mato Grosso</option>
-  <option value="Mato Grosso do Sul">Mato Grosso do Sul</option>
-  <option value="Minas Gerais">Minas Gerais</option>
-  <option value="Pará">Pará</option>
-  <option value="Paraíba">Paraíba</option>
-  <option value="Paraná">Paraná</option>
-  <option value="Pernambuco">Pernambuco</option>
-  <option value="Piauí">Piauí</option>
-  <option value="Rio de Janeiro">Rio de Janeiro</option>
-  <option value="Rio Grande do Norte">Rio Grande do Norte</option>
-  <option value="Rio Grande do Sul">Rio Grande do Sul</option>
-  <option value="Rondônia">Rondônia</option>
-  <option value="Roraima">Roraima</option>
-  <option value="Santa Catarina">Santa Catarina</option>
-  <option value="São Paulo">São Paulo</option>
-  <option value="Sergipe">Sergipe</option>
-  <option value="Tocantins">Tocantins</option>
-</select>
-
-
-<select id="categorySelect">
-  <option value="">Todas as categorias</option>
-  <option value="adult contemporary">Adult Contemporary</option>
-  <option value="alternative">Alternative</option>
-  <option value="ambient">Ambient</option>
-  <option value="blues">Blues</option>
-  <option value="bossa nova">Bossa Nova</option>
-  <option value="classical">Clássica</option>
-  <option value="country">Country</option>
-  <option value="dance">Dance</option>
-  <option value="electronic">Eletrônica</option>
-  <option value="forró">Forró</option>
-  <option value="funk">Funk</option>
-  <option value="gospel">Gospel</option>
-  <option value="hip hop">Hip Hop</option>
-  <option value="house">House</option>
-  <option value="indie">Indie</option>
-  <option value="jazz">Jazz</option>
-  <option value="latin">Latin</option>
-  <option value="mpb">MPB</option>
-  <option value="news">Notícias</option>
-  <option value="oldies">Oldies</option>
-  <option value="pop">Pop</option>
-  <option value="progressive">Progressive</option>
-  <option value="reggae">Reggae</option>
-  <option value="religious">Religiosa</option>
-  <option value="rock">Rock</option>
-  <option value="salsa">Salsa</option>
-  <option value="sertanejo">Sertanejo</option>
-  <option value="soul">Soul</option>
-  <option value="talk">Talk / Entrevistas</option>
-  <option value="techno">Techno</option>
-  <option value="trance">Trance</option>
-  <option value="variety">Variedades</option>
-</select>
-
-	<button onclick="applyFilters()">Buscar</button>
-	<button onclick="showFavorites()">⭐ Favoritos</button>
+    <input id="searchInput" placeholder="Buscar por nome">
+    <select id="stateSelect"><option value="">Todos os estados</option></select>
+    <select id="categorySelect"><option value="">Todas as categorias</option></select>
+    <button onclick="applyFilters()">Buscar</button>
+    <button onclick="showFavorites()">⭐ Favoritos</button>
 </div>
 
-<div class="ad-top">
-<script>
-  atOptions = {
-    'key' : '6b119b3b6aa653dcbe1e30654f66fc11',
-    'format' : 'iframe',
-    'height' : 60,
-    'width' : 468,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/6b119b3b6aa653dcbe1e30654f66fc11/invoke.js"></script>	
-</div>
+<!-- Anúncio Topo -->
+<div class="ad-top" id="ad-top"></div>
 
 <div class="main-container">
-    <div class="ad-side">[ Lateral Esquerda ]</div>
+    <div class="ad-side">Lateral</div>
     <div class="content">
         <div id="stations"></div>
     </div>
-    <div class="ad-side">[ Lateral Direita ]</div>
+    <div class="ad-side">Lateral</div>
 </div>
 
-<div class="ad-bottom">[ Espaço para anúncio - Rodapé 1200x90 ]</div>
+<!-- Anúncio Rodapé -->
+<div class="ad-bottom" id="ad-bottom"></div>
 
 <script>
 const API_BASE = "https://de2.api.radio-browser.info/json";
-const playerContainer = document.getElementById("playerContainer");
 const player = document.getElementById("radioPlayer");
+const playerContainer = document.getElementById("playerContainer");
 const currentLogo = document.getElementById("currentLogo");
 const currentStation = document.getElementById("currentStation");
-
 let favorites = JSON.parse(localStorage.getItem("favoriteStations") || "[]");
 
-// Sempre carrega o feed e depois tenta tocar a rádio da URL
-window.addEventListener('DOMContentLoaded', async () => {
-    // 1) Lista de rádios
-    fetchStations();
+fetchStations();
 
-    // 2) Se tiver ?station=..., toca essa rádio também
-    const params = new URLSearchParams(location.search);
-    const stationId = params.get('station');
-
-    if (stationId) {
-        try {
-            const r = await fetch(`${API_BASE}/stations/byuuid/${encodeURIComponent(stationId)}`);
-            const data = await r.json();
-            if (Array.isArray(data) && data.length) {
-                playStation(data[0], false);
-            }
-        } catch (e) {
-            console.warn("Falha ao carregar rádio da URL:", e);
-        }
-    }
-});
-
-async function fetchStations(search = "", state = "", category = "") {
-    document.getElementById("stations").innerHTML = "<p>Carregando estações...</p>";
-    try {
-        let url = `${API_BASE}/stations/search?country=Brazil&limit=50&order=clickcount&reverse=true`;
-        if (search) url += `&name=${encodeURIComponent(search)}`;
-        if (state) url += `&state=${encodeURIComponent(state)}`;
-        if (category) url += `&tag=${encodeURIComponent(category)}`;
-
-        const response = await fetch(url);
-        const data = await response.json();
-        renderStations(data);
-    } catch (err) {
-        console.error(err);
-        document.getElementById("stations").innerHTML = "<p>Erro ao carregar estações.</p>";
-    }
+async function fetchStations() {
+    const r = await fetch(`${API_BASE}/stations/search?country=Brazil&limit=50`);
+    const data = await r.json();
+    renderStations(data);
 }
 
 function renderStations(stations) {
-    const container = document.getElementById("stations");
-    container.innerHTML = "";
-
-    if (!stations.length) {
-        container.innerHTML = "<p>Nenhuma estação encontrada.</p>";
-        return;
-    }
-
-    stations.forEach(station => {
-        const div = document.createElement("div");
-        div.className = "station";
-
-        const isFavorite = favorites.some(fav => fav.stationuuid === station.stationuuid);
-
-        div.innerHTML = `
-            <span class="fav-icon ${isFavorite ? 'favorited' : ''}">★</span>
-            <img src="${station.favicon || 'https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png'}" alt="Logo">
-            <h3>${station.name}</h3>
-            <p style="font-size: 0.9em; color: #aaa; word-wrap: break-word; overflow-wrap: break-word;">${station.tags || "Sem tags"}</p>
+    const c = document.getElementById("stations");
+    c.innerHTML = "";
+    stations.forEach(s => {
+        const d = document.createElement("div");
+        d.className = "station";
+        d.innerHTML = `
+            <span class="fav-icon ${favorites.some(f=>f.stationuuid===s.stationuuid) ? 'favorited':''}">★</span>
+            <img src="${s.favicon || ''}">
+            <h3>${s.name}</h3>
         `;
-
-        div.querySelector("img").onclick = () => playStation(station, true);
-        div.querySelector("h3").onclick = () => playStation(station, true);
-
-        div.querySelector(".fav-icon").onclick = (e) => {
+        d.onclick = () => playStation(s);
+        d.querySelector(".fav-icon").onclick = e => {
             e.stopPropagation();
-            toggleFavorite(station);
+            toggleFavorite(s);
             renderStations(stations);
         };
-
-        container.appendChild(div);
+        c.appendChild(d);
     });
 }
 
-function toggleFavorite(station) {
-    const index = favorites.findIndex(fav => fav.stationuuid === station.stationuuid);
-    if (index > -1) {
-        favorites.splice(index, 1);
-    } else {
-        favorites.push({ stationuuid: station.stationuuid, ...station });
-    }
+function playStation(s) {
+    currentLogo.src = s.favicon || "";
+    currentStation.textContent = s.name;
+    player.src = s.url_resolved;
+    player.play();
+    playerContainer.style.display = "block";
+}
+
+function toggleFavorite(s) {
+    const i = favorites.findIndex(f => f.stationuuid === s.stationuuid);
+    i >= 0 ? favorites.splice(i,1) : favorites.push(s);
     localStorage.setItem("favoriteStations", JSON.stringify(favorites));
 }
 
 function showFavorites() {
-    if (!favorites.length) {
-        document.getElementById("stations").innerHTML = "<p>Você ainda não tem rádios favoritas.</p>";
-        return;
-    }
-    renderStations(favorites);
-}
-
-function playStation(station, updateUrl = true) {
-    currentLogo.src = station.favicon || "https://www.coinpayu.com/static/newImg/dashboard/dashboard_afternoon.png";
-    currentStation.textContent = station.name;
-    player.src = station.url_resolved;
-    player.play();
-    playerContainer.style.display = "block";
-
-    if (updateUrl) {
-        const params = new URLSearchParams(window.location.search);
-        params.set("station", station.stationuuid);
-        history.pushState(null, "", "?" + params.toString());
-    }
+    favorites.length ? renderStations(favorites) : alert("Sem favoritos");
 }
 
 function applyFilters() {
-    const search = document.getElementById("searchInput").value.trim();
-    const state = document.getElementById("stateSelect").value;
-    const category = document.getElementById("categorySelect").value;
-    fetchStations(search, state, category);
+    fetchStations();
 }
+
+/* ===== ANÚNCIOS ===== */
+
+function loadTopAd() {
+    const c = document.getElementById("ad-top");
+    c.innerHTML = "";
+
+    const s1 = document.createElement("script");
+    s1.innerHTML = `
+        atOptions = {
+            'key' : '6b119b3b6aa653dcbe1e30654f66fc11',
+            'format' : 'iframe',
+            'height' : 60,
+            'width' : 468,
+            'params' : {}
+        };
+    `;
+
+    const s2 = document.createElement("script");
+    s2.src = "https://www.highperformanceformat.com/6b119b3b6aa653dcbe1e30654f66fc11/invoke.js";
+    s2.async = true;
+
+    c.appendChild(s1);
+    c.appendChild(s2);
+}
+
+function loadBottomAd() {
+    document.getElementById("ad-bottom").innerHTML =
+        "[ Espaço para anúncio - 1200x90 ]";
+}
+
+loadTopAd();
+loadBottomAd();
+
+/* Atualiza SOMENTE anúncios a cada 3 minutos */
+setInterval(() => {
+    loadTopAd();
+    loadBottomAd();
+}, 180000);
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
