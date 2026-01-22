@@ -446,7 +446,16 @@ loadTopAd();
 loadBottomAd();
 
 /* Atualiza SOMENTE os anúncios a cada 3 minutos */
+
+let pageIsVisible = true;
+
+document.addEventListener("visibilitychange", () => {
+    pageIsVisible = !document.hidden;
+});
+	
 setInterval(() => {
+    if (!pageIsVisible) return; // Usuário não está vendo
+
     loadTopAd();
     loadBottomAd();
 }, 180000); // 3 minutos
@@ -454,6 +463,7 @@ setInterval(() => {
 </script>
 </body>
 </html>
+
 
 
 
