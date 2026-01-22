@@ -78,17 +78,26 @@
 
     /* Áreas de anúncios */
     .ad-top, .ad-bottom {
-        width: calc( 90%);
-        max-width: 1200px;
-        height: 90px;
+        max-width: 100%;
+        height: auto;
         background: #333;
         color: #ccc;
-        display: flex;
         justify-content: center;
         align-items: center;
-        margin: 15px 0;
         text-align: center;
     }
+
+	.ad-top iframe,  
+	.ad-top object,  
+	.ad-top embed,
+	.ad-top img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	}
+	
     .ad-side {
         width: 120px;
         background: #333;
@@ -435,6 +444,7 @@ function applyFilters() {
 </script>
 </body>
 </html>
+
 
 
 
